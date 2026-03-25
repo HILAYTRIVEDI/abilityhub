@@ -1,0 +1,869 @@
+/* =============================================================================
+   AbilityHub Admin CSS
+   ============================================================================= */
+
+/* ---- Variables ------------------------------------------------------------ */
+:root {
+    --ah-primary:       #7c3aed;
+    --ah-primary-hover: #6d28d9;
+    --ah-primary-light: #ede9fe;
+    --ah-success:       #059669;
+    --ah-success-bg:    #d1fae5;
+    --ah-error:         #dc2626;
+    --ah-error-bg:      #fee2e2;
+    --ah-warning:       #d97706;
+    --ah-warning-bg:    #fef3c7;
+    --ah-gray-50:       #f9fafb;
+    --ah-gray-100:      #f3f4f6;
+    --ah-gray-200:      #e5e7eb;
+    --ah-gray-300:      #d1d5db;
+    --ah-gray-500:      #6b7280;
+    --ah-gray-700:      #374151;
+    --ah-gray-900:      #111827;
+    --ah-radius:        8px;
+    --ah-radius-sm:     4px;
+    --ah-shadow:        0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+    --ah-shadow-md:     0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+    --ah-shadow-lg:     0 10px 15px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.05);
+    --ah-transition:    150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Wrap ----------------------------------------------------------------- */
+.abilityhub-wrap {
+    max-width: 1280px;
+    margin-right: 20px;
+}
+
+/* ---- Header --------------------------------------------------------------- */
+.abilityhub-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0 8px;
+}
+
+.abilityhub-header__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.abilityhub-header__logo h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ah-primary);
+}
+
+.abilityhub-logo-icon {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.abilityhub-version {
+    font-size: 11px;
+    color: var(--ah-gray-500);
+    background: var(--ah-gray-100);
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* ---- Tabs ----------------------------------------------------------------- */
+.abilityhub-tabs {
+    margin-top: 4px !important;
+    margin-bottom: 24px !important;
+    border-bottom: 1px solid var(--ah-gray-200) !important;
+}
+
+.abilityhub-tabs .nav-tab {
+    font-weight: 500;
+    transition: color var(--ah-transition), border-color var(--ah-transition);
+}
+
+.abilityhub-tabs .nav-tab-active {
+    border-bottom-color: var(--ah-primary) !important;
+    color: var(--ah-primary) !important;
+}
+
+/* ---- Cards ---------------------------------------------------------------- */
+.abilityhub-card {
+    background: #fff;
+    border: 1px solid var(--ah-gray-200);
+    border-radius: var(--ah-radius);
+    box-shadow: var(--ah-shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.abilityhub-card__header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--ah-gray-100);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.abilityhub-card__header h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ah-gray-900);
+}
+
+.abilityhub-card__subtitle {
+    margin: 0;
+    color: var(--ah-gray-500);
+    font-size: 13px;
+}
+
+.abilityhub-card__body {
+    padding: 20px;
+}
+
+/* ---- Info box ------------------------------------------------------------- */
+.abilityhub-info-box {
+    background: var(--ah-primary-light);
+    border: 1px solid #c4b5fd;
+    border-radius: var(--ah-radius);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+}
+
+.abilityhub-info-box h2 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ah-primary);
+}
+
+.abilityhub-info-box p {
+    margin: 0 0 10px;
+    color: var(--ah-gray-700);
+    font-size: 13px;
+}
+
+.abilityhub-info-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.abilityhub-info-box ul li {
+    margin-bottom: 4px;
+    color: var(--ah-gray-700);
+    font-size: 13px;
+}
+
+/* ---- Stats grid ----------------------------------------------------------- */
+.abilityhub-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.abilityhub-stat-card {
+    background: #fff;
+    border: 1px solid var(--ah-gray-200);
+    border-radius: var(--ah-radius);
+    box-shadow: var(--ah-shadow);
+    padding: 20px;
+    text-align: center;
+    transition: box-shadow var(--ah-transition);
+}
+
+.abilityhub-stat-card:hover {
+    box-shadow: var(--ah-shadow-md);
+}
+
+.abilityhub-stat-card__icon {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.abilityhub-stat-card__value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ah-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.abilityhub-stat-card__value--small {
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.abilityhub-stat-card__label {
+    font-size: 12px;
+    color: var(--ah-gray-500);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ---- Quick Execute panel -------------------------------------------------- */
+.abilityhub-quick-execute {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 900px) {
+    .abilityhub-quick-execute {
+        grid-template-columns: 1fr;
+    }
+}
+
+.abilityhub-quick-execute__output {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---- Form fields ---------------------------------------------------------- */
+.abilityhub-field {
+    margin-bottom: 16px;
+}
+
+.abilityhub-field label {
+    display: block;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ah-gray-700);
+    margin-bottom: 6px;
+}
+
+.abilityhub-field--inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 12px;
+    margin-bottom: 0;
+}
+
+.abilityhub-field--inline label {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.abilityhub-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--ah-gray-300);
+    border-radius: var(--ah-radius-sm);
+    font-size: 13px;
+    color: var(--ah-gray-900);
+    background: #fff;
+    transition: border-color var(--ah-transition);
+}
+
+.abilityhub-select:focus {
+    outline: none;
+    border-color: var(--ah-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.abilityhub-textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--ah-gray-300);
+    border-radius: var(--ah-radius-sm);
+    font-size: 13px;
+    resize: vertical;
+    transition: border-color var(--ah-transition);
+    box-sizing: border-box;
+}
+
+.abilityhub-textarea:focus {
+    outline: none;
+    border-color: var(--ah-primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+.abilityhub-textarea--code {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, monospace;
+    font-size: 12px;
+    background: var(--ah-gray-50);
+    tab-size: 2;
+}
+
+.abilityhub-button {
+    background: var(--ah-primary) !important;
+    border-color: var(--ah-primary) !important;
+    color: #fff !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    border-radius: var(--ah-radius-sm) !important;
+    transition: background var(--ah-transition) !important;
+}
+
+.abilityhub-button:hover {
+    background: var(--ah-primary-hover) !important;
+    border-color: var(--ah-primary-hover) !important;
+}
+
+.abilityhub-button:disabled,
+.abilityhub-button.is-loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* ---- Output area ---------------------------------------------------------- */
+.abilityhub-output-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--ah-gray-100);
+    border: 1px solid var(--ah-gray-200);
+    border-bottom: none;
+    border-radius: var(--ah-radius-sm) var(--ah-radius-sm) 0 0;
+    font-size: 12px;
+}
+
+.abilityhub-output-label {
+    font-weight: 600;
+    color: var(--ah-gray-700);
+}
+
+.abilityhub-output-meta {
+    color: var(--ah-gray-500);
+    font-size: 11px;
+}
+
+.abilityhub-output-pre {
+    margin: 0;
+    padding: 14px;
+    background: var(--ah-gray-900);
+    color: #e5e7eb;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    border: 1px solid var(--ah-gray-200);
+    border-top: none;
+    border-radius: 0 0 var(--ah-radius-sm) var(--ah-radius-sm);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.abilityhub-output-pre.is-success {
+    border-color: var(--ah-success);
+}
+
+.abilityhub-output-pre.is-error {
+    border-color: var(--ah-error);
+    background: #1c0a0a;
+    color: #fca5a5;
+}
+
+.abilityhub-copy-btn {
+    background: none;
+    border: 1px solid var(--ah-gray-300);
+    border-radius: var(--ah-radius-sm);
+    padding: 3px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--ah-gray-500);
+    transition: all var(--ah-transition);
+}
+
+.abilityhub-copy-btn:hover {
+    border-color: var(--ah-primary);
+    color: var(--ah-primary);
+}
+
+/* ---- Store ---------------------------------------------------------------- */
+.abilityhub-store__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 16px;
+}
+
+.abilityhub-store__header h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ah-gray-900);
+}
+
+.abilityhub-store__subtitle {
+    margin: 0;
+    color: var(--ah-gray-500);
+    font-size: 13px;
+}
+
+/* Category filter */
+.abilityhub-category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.abilityhub-filter-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border: 1px solid var(--ah-gray-300);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ah-gray-700);
+    text-decoration: none;
+    background: #fff;
+    transition: all var(--ah-transition);
+}
+
+.abilityhub-filter-tab:hover,
+.abilityhub-filter-tab--active {
+    background: var(--ah-primary);
+    border-color: var(--ah-primary);
+    color: #fff;
+}
+
+/* Ability cards grid */
+.abilityhub-abilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.abilityhub-ability-card {
+    background: #fff;
+    border: 1px solid var(--ah-gray-200);
+    border-radius: var(--ah-radius);
+    box-shadow: var(--ah-shadow);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow var(--ah-transition), transform var(--ah-transition);
+    overflow: hidden;
+}
+
+.abilityhub-ability-card:hover {
+    box-shadow: var(--ah-shadow-md);
+    transform: translateY(-1px);
+}
+
+.abilityhub-ability-card__header {
+    padding: 14px 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.abilityhub-ability-card__icon {
+    font-size: 22px;
+    line-height: 1;
+    margin-right: 2px;
+}
+
+.abilityhub-ability-card__body {
+    padding: 14px 16px;
+    flex: 1;
+}
+
+.abilityhub-ability-card__name {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ah-gray-900);
+}
+
+.abilityhub-ability-card__slug {
+    margin: 0 0 8px;
+    font-size: 11px;
+    color: var(--ah-gray-500);
+    font-family: ui-monospace, monospace;
+}
+
+.abilityhub-ability-card__description {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ah-gray-500);
+    line-height: 1.5;
+}
+
+.abilityhub-ability-card__footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--ah-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ---- Badges --------------------------------------------------------------- */
+.abilityhub-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
+}
+
+.abilityhub-badge--seo           { background: #dbeafe; color: #1d4ed8; }
+.abilityhub-badge--editorial     { background: #fce7f3; color: #9d174d; }
+.abilityhub-badge--multilingual  { background: #d1fae5; color: #065f46; }
+.abilityhub-badge--ecommerce     { background: #fef3c7; color: #92400e; }
+.abilityhub-badge--moderation    { background: #fee2e2; color: #991b1b; }
+.abilityhub-badge--developer     { background: #e0e7ff; color: #3730a3; }
+.abilityhub-badge--accessibility { background: #cffafe; color: #155e75; }
+.abilityhub-badge--media         { background: #f0fdf4; color: #166534; }
+.abilityhub-badge--site          { background: #f3e8ff; color: #6d28d9; }
+.abilityhub-badge--installed     { background: var(--ah-success-bg); color: var(--ah-success); }
+.abilityhub-badge--own           { background: var(--ah-primary-light); color: var(--ah-primary); }
+.abilityhub-badge--coming-soon   { background: var(--ah-warning-bg); color: var(--ah-warning); }
+
+/* ---- Table ---------------------------------------------------------------- */
+.abilityhub-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--ah-radius);
+    box-shadow: var(--ah-shadow);
+}
+
+.abilityhub-table {
+    border-radius: var(--ah-radius) !important;
+    overflow: hidden;
+}
+
+.abilityhub-table thead th {
+    background: var(--ah-gray-50) !important;
+    color: var(--ah-gray-700) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 10px 14px !important;
+    border-bottom: 1px solid var(--ah-gray-200) !important;
+}
+
+.abilityhub-table tbody td {
+    padding: 12px 14px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid var(--ah-gray-100) !important;
+    font-size: 13px !important;
+}
+
+.abilityhub-table tbody tr:hover td {
+    background: var(--ah-gray-50);
+}
+
+.abilityhub-table__row--own {
+    background: rgba(237, 233, 254, 0.2);
+}
+
+.abilityhub-code {
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 12px;
+    background: var(--ah-gray-100);
+    padding: 2px 6px;
+    border-radius: var(--ah-radius-sm);
+    color: var(--ah-gray-700);
+}
+
+/* ---- Status badges -------------------------------------------------------- */
+.abilityhub-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+
+.abilityhub-status--success {
+    background: var(--ah-success-bg);
+    color: var(--ah-success);
+}
+
+.abilityhub-status--error {
+    background: var(--ah-error-bg);
+    color: var(--ah-error);
+}
+
+/* ---- Logs ----------------------------------------------------------------- */
+.abilityhub-logs__header,
+.abilityhub-installed__header,
+.abilityhub-store__header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 16px;
+}
+
+.abilityhub-logs__header h2,
+.abilityhub-installed__header h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.abilityhub-installed__subtitle,
+.abilityhub-logs__subtitle {
+    margin: 0;
+    color: var(--ah-gray-500);
+    font-size: 13px;
+}
+
+.abilityhub-filters {
+    background: var(--ah-gray-50);
+    border: 1px solid var(--ah-gray-200);
+    border-radius: var(--ah-radius);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.abilityhub-filters__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.abilityhub-table-meta {
+    font-size: 13px;
+    color: var(--ah-gray-500);
+    margin-bottom: 12px;
+}
+
+.abilityhub-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 0;
+}
+
+.abilityhub-pagination__info {
+    font-size: 13px;
+    color: var(--ah-gray-500);
+}
+
+/* ---- Settings ------------------------------------------------------------- */
+.abilityhub-settings .abilityhub-card {
+    margin-bottom: 20px;
+}
+
+.abilityhub-settings .form-table th {
+    padding-left: 0;
+    width: 220px;
+    font-size: 13px;
+    color: var(--ah-gray-700);
+}
+
+.abilityhub-settings .form-table td {
+    padding-left: 0;
+}
+
+.abilityhub-provider-name {
+    font-weight: 600;
+    color: var(--ah-primary);
+    font-size: 14px;
+}
+
+.abilityhub-provider-name--unavailable {
+    color: #d63638;
+}
+
+/* Toggle switch */
+.abilityhub-toggle {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.abilityhub-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.abilityhub-toggle__slider {
+    position: absolute;
+    inset: 0;
+    background: var(--ah-gray-300);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: background var(--ah-transition);
+}
+
+.abilityhub-toggle__slider::before {
+    content: '';
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform var(--ah-transition);
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+.abilityhub-toggle input:checked + .abilityhub-toggle__slider {
+    background: var(--ah-primary);
+}
+
+.abilityhub-toggle input:checked + .abilityhub-toggle__slider::before {
+    transform: translateX(18px);
+}
+
+/* ---- Modal ---------------------------------------------------------------- */
+.abilityhub-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.abilityhub-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+}
+
+.abilityhub-modal__content {
+    position: relative;
+    background: #fff;
+    border-radius: var(--ah-radius);
+    box-shadow: var(--ah-shadow-lg);
+    width: 90%;
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1;
+    animation: ah-modal-in 150ms ease-out;
+}
+
+@keyframes ah-modal-in {
+    from { opacity: 0; transform: scale(0.95) translateY(-8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.abilityhub-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--ah-gray-200);
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+}
+
+.abilityhub-modal__title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ah-gray-900);
+}
+
+.abilityhub-modal__close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--ah-gray-500);
+    padding: 4px 8px;
+    border-radius: var(--ah-radius-sm);
+    line-height: 1;
+    transition: all var(--ah-transition);
+}
+
+.abilityhub-modal__close:hover {
+    background: var(--ah-gray-100);
+    color: var(--ah-gray-900);
+}
+
+.abilityhub-modal__body {
+    padding: 20px;
+}
+
+.abilityhub-modal__output {
+    margin-top: 20px;
+}
+
+/* ---- Empty state ---------------------------------------------------------- */
+.abilityhub-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ah-gray-500);
+}
+
+.abilityhub-empty-state__icon {
+    display: block;
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.abilityhub-empty-state h3 {
+    font-size: 16px;
+    margin: 0 0 8px;
+    color: var(--ah-gray-700);
+}
+
+.abilityhub-empty-state p {
+    font-size: 13px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* ---- Misc ----------------------------------------------------------------- */
+.abilityhub-link {
+    color: var(--ah-primary);
+    text-decoration: none;
+}
+
+.abilityhub-link:hover {
+    text-decoration: underline;
+}
+
+.abilityhub-muted {
+    color: var(--ah-gray-400);
+    font-style: italic;
+}
+
+.abilityhub-notice {
+    margin-top: 16px;
+}
+
+/* Loading spinner on button */
+.abilityhub-button.is-loading::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: ah-spin 0.6s linear infinite;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+@keyframes ah-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Try btn in table */
+.abilityhub-try-btn {
+    white-space: nowrap;
+}
