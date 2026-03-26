@@ -22,7 +22,7 @@ if ( function_exists( 'wp_get_abilities' ) ) {
 <?php if ( ! $ai_available ) : ?>
     <div class="notice notice-warning abilityhub-notice">
         <p>
-            <strong><?php esc_html_e( 'AI Provider not configured', 'abilityhub' ); ?></strong> —
+            <strong><?php esc_html_e( 'AI Provider not configured', 'abilityhub' ); ?></strong> 
             <?php esc_html_e( 'AbilityHub requires WordPress 7.0+ with an AI provider configured via the WordPress AI Client. Abilities will return errors until an AI provider is connected.', 'abilityhub' ); ?>
         </p>
     </div>
@@ -60,12 +60,12 @@ if ( function_exists( 'wp_get_abilities' ) ) {
     <div class="abilityhub-info-box">
         <h2><?php esc_html_e( 'New in WordPress 7.0: The Abilities API', 'abilityhub' ); ?> 🎉</h2>
         <p>
-            <?php esc_html_e( 'The WordPress Abilities API is a standardised way to register, discover, and execute AI-powered capabilities on any WordPress site. Think of "abilities" like WordPress blocks — but for AI actions.', 'abilityhub' ); ?>
+            <?php esc_html_e( 'The WordPress Abilities API is a standardised way to register, discover, and execute AI-powered capabilities on any WordPress site. Think of "abilities" like WordPress blocks  but for AI actions.', 'abilityhub' ); ?>
         </p>
         <ul>
             <li><?php esc_html_e( 'Any plugin can register an ability using wp_register_ability()', 'abilityhub' ); ?></li>
             <li><?php esc_html_e( 'Every ability is automatically available via the REST API at /wp-json/wp-abilities/v1/abilities', 'abilityhub' ); ?></li>
-            <li><?php esc_html_e( 'AI calls are provider-agnostic — AbilityHub works with any WordPress AI provider', 'abilityhub' ); ?></li>
+            <li><?php esc_html_e( 'AI calls are provider-agnostic  AbilityHub works with any WordPress AI provider', 'abilityhub' ); ?></li>
             <li><?php esc_html_e( 'The MCP Manifest ability turns your site into a discoverable AI tool server', 'abilityhub' ); ?></li>
         </ul>
     </div>
@@ -82,7 +82,7 @@ if ( function_exists( 'wp_get_abilities' ) ) {
                     <div class="abilityhub-field">
                         <label for="qe-ability"><?php esc_html_e( 'Ability', 'abilityhub' ); ?></label>
                         <select id="qe-ability" class="abilityhub-select">
-                            <option value=""><?php esc_html_e( '— Select an ability —', 'abilityhub' ); ?></option>
+                            <option value=""><?php esc_html_e( ' Select an ability ', 'abilityhub' ); ?></option>
                             <?php
                             $store_abilities = AbilityHub_Admin::get_store_abilities();
                             foreach ( $store_abilities as $ability ) :
