@@ -70,46 +70,106 @@ if ( function_exists( 'wp_get_abilities' ) ) {
         </ul>
     </div>
 
-    <!-- Quick Execute Panel -->
+    <!-- WP Core Abilities Explorer link -->
     <div class="abilityhub-card">
         <div class="abilityhub-card__header">
-            <h2><?php esc_html_e( 'Quick Execute', 'abilityhub' ); ?></h2>
-            <p class="abilityhub-card__subtitle"><?php esc_html_e( 'Test any registered ability directly from this dashboard.', 'abilityhub' ); ?></p>
+            <h2><?php esc_html_e( 'Abilities Explorer', 'abilityhub' ); ?></h2>
+            <p class="abilityhub-card__subtitle"><?php esc_html_e( 'WordPress includes a built-in tool to browse, inspect, and test every registered ability on this site.', 'abilityhub' ); ?></p>
         </div>
         <div class="abilityhub-card__body">
-            <div class="abilityhub-quick-execute">
-                <div class="abilityhub-quick-execute__controls">
-                    <div class="abilityhub-field">
-                        <label for="qe-ability"><?php esc_html_e( 'Ability', 'abilityhub' ); ?></label>
-                        <select id="qe-ability" class="abilityhub-select">
-                            <option value=""><?php esc_html_e( ' Select an ability ', 'abilityhub' ); ?></option>
-                            <?php
-                            $store_abilities = AbilityHub_Admin::get_store_abilities();
-                            foreach ( $store_abilities as $ability ) :
-                            ?>
-                                <option value="<?php echo esc_attr( $ability['name'] ); ?>"
-                                        data-example="<?php echo esc_attr( wp_json_encode( $ability['example'] ) ); ?>">
-                                    <?php echo esc_html( $ability['label'] ); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="abilityhub-field">
-                        <label for="qe-input"><?php esc_html_e( 'Input (JSON)', 'abilityhub' ); ?></label>
-                        <textarea id="qe-input" class="abilityhub-textarea abilityhub-textarea--code" rows="6" placeholder="{}">{}</textarea>
-                    </div>
-                    <button id="qe-run" class="button button-primary abilityhub-button">
-                        <?php esc_html_e( 'Execute Ability', 'abilityhub' ); ?>
-                    </button>
-                </div>
-                <div class="abilityhub-quick-execute__output" id="qe-output" style="display:none;">
-                    <div class="abilityhub-output-header">
-                        <span class="abilityhub-output-label"><?php esc_html_e( 'Output', 'abilityhub' ); ?></span>
-                        <button class="abilityhub-copy-btn" data-target="qe-result"><?php esc_html_e( 'Copy', 'abilityhub' ); ?></button>
-                    </div>
-                    <pre id="qe-result" class="abilityhub-output-pre"></pre>
-                </div>
-            </div>
+            <p><?php esc_html_e( 'Use the WordPress AI Abilities Explorer to run any ability interactively, inspect its input schema, and view the raw output — no custom tooling needed.', 'abilityhub' ); ?></p>
+            <a href="<?php echo esc_url( admin_url( 'tools.php?page=ai-abilities-explorer' ) ); ?>"
+               class="button button-primary abilityhub-button">
+                <?php esc_html_e( 'Open Abilities Explorer', 'abilityhub' ); ?> ↗
+            </a>
+        </div>
+    </div>
+
+    <!-- How to use AbilityHub -->
+    <div class="abilityhub-card">
+        <div class="abilityhub-card__header">
+            <h2><?php esc_html_e( 'How to Use AbilityHub', 'abilityhub' ); ?></h2>
+        </div>
+        <div class="abilityhub-card__body abilityhub-docs">
+
+            <h3><?php esc_html_e( 'What is AbilityHub?', 'abilityhub' ); ?></h3>
+            <p>
+                <?php esc_html_e( 'AbilityHub is a WordPress plugin that ships 15 production-ready AI abilities built on the WordPress 7.0 Abilities API. Each ability is a named, self-describing AI action (e.g. "generate alt text" or "rewrite tone") that any plugin, theme, or tool can discover and execute — without hard-coding AI logic.', 'abilityhub' ); ?>
+            </p>
+
+            <h3><?php esc_html_e( 'Admin Panel Tabs', 'abilityhub' ); ?></h3>
+            <table class="widefat abilityhub-docs__table">
+                <thead>
+                    <tr>
+                        <th><?php esc_html_e( 'Tab', 'abilityhub' ); ?></th>
+                        <th><?php esc_html_e( 'What it does', 'abilityhub' ); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong><?php esc_html_e( 'Dashboard', 'abilityhub' ); ?></strong></td>
+                        <td><?php esc_html_e( 'Overview stats (executions today/this week, most-used ability) and quick links.', 'abilityhub' ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong><?php esc_html_e( 'Ability Store', 'abilityhub' ); ?></strong></td>
+                        <td><?php esc_html_e( 'Browse all 15 bundled abilities by category. See which are active and view their REST endpoint schema.', 'abilityhub' ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong><?php esc_html_e( 'Installed', 'abilityhub' ); ?></strong></td>
+                        <td><?php esc_html_e( 'Lists every ability currently registered on this site — from AbilityHub and any other plugin using the Abilities API — with last-execution timestamps.', 'abilityhub' ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong><?php esc_html_e( 'Execution Logs', 'abilityhub' ); ?></strong></td>
+                        <td><?php esc_html_e( 'Full history of ability executions: status, duration, triggering user, and input/output payload. Exportable as CSV.', 'abilityhub' ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong><?php esc_html_e( 'Workflows', 'abilityhub' ); ?></strong></td>
+                        <td><?php esc_html_e( 'Define multi-step automated workflows that chain abilities together. Supports an approval queue for outputs that need a human review before applying.', 'abilityhub' ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong><?php esc_html_e( 'AI Operator', 'abilityhub' ); ?></strong></td>
+                        <td><?php esc_html_e( 'A conversational interface — ask it to run abilities, explain results, or perform bulk operations across your content in plain language.', 'abilityhub' ); ?></td>
+                    </tr>
+                    <tr>
+                        <td><strong><?php esc_html_e( 'Settings', 'abilityhub' ); ?></strong></td>
+                        <td><?php esc_html_e( 'Enable/disable execution logging, set log retention period, and configure your AbilityHub Registry API key for community abilities.', 'abilityhub' ); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3><?php esc_html_e( 'Running an Ability', 'abilityhub' ); ?></h3>
+            <ol>
+                <li><?php esc_html_e( 'Open the WordPress AI Abilities Explorer via the button above.', 'abilityhub' ); ?></li>
+                <li><?php esc_html_e( 'Select any registered ability from the list.', 'abilityhub' ); ?></li>
+                <li><?php esc_html_e( 'Fill in the required input fields and click Execute.', 'abilityhub' ); ?></li>
+                <li><?php esc_html_e( 'The output appears immediately. Executions are logged in the Execution Logs tab.', 'abilityhub' ); ?></li>
+            </ol>
+
+            <h3><?php esc_html_e( 'Calling Abilities from Code', 'abilityhub' ); ?></h3>
+            <p><?php esc_html_e( 'Every ability is available via the WordPress REST API:', 'abilityhub' ); ?></p>
+            <pre class="abilityhub-output-pre">POST /wp-json/wp-abilities/v1/abilities/{ability-name}/execute
+Content-Type: application/json
+
+{ "content": "Your input here" }</pre>
+            <p><?php esc_html_e( 'Or call it server-side:', 'abilityhub' ); ?></p>
+            <pre class="abilityhub-output-pre">$ability = wp_get_ability( 'abilityhub/summarise-post' );
+$result  = $ability->execute( [ 'content' => get_the_content() ] );</pre>
+
+            <h3><?php esc_html_e( 'Registering Your Own Ability', 'abilityhub' ); ?></h3>
+            <p><?php esc_html_e( 'Use the WordPress 7.0 Abilities API to register custom abilities from any plugin:', 'abilityhub' ); ?></p>
+            <pre class="abilityhub-output-pre">add_action( 'wp_abilities_api_init', function() {
+    wp_register_ability( 'my-plugin/my-ability', [
+        'label'    => 'My Custom Ability',
+        'callback' => function( array $input ): string {
+            return wp_ai_client_prompt( 'Do something with: ' . $input['text'] );
+        },
+        'schema'   => [
+            'text' => [ 'type' => 'string', 'required' => true ],
+        ],
+    ] );
+} );</pre>
+            <p><?php esc_html_e( 'Once registered, your ability appears automatically in the Installed tab and the Abilities Explorer.', 'abilityhub' ); ?></p>
+
         </div>
     </div>
 

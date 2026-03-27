@@ -61,13 +61,6 @@ class AbilityHub_Admin {
         wp_localize_script( 'abilityhub-admin', 'AbilityHub', [
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( 'abilityhub_nonce' ),
-            'i18n'     => [
-                'executing'   => __( 'Executing…', 'abilityhub' ),
-                'error'       => __( 'Error', 'abilityhub' ),
-                'success'     => __( 'Success', 'abilityhub' ),
-                'copy'        => __( 'Copy', 'abilityhub' ),
-                'copied'      => __( 'Copied!', 'abilityhub' ),
-            ],
         ] );
 
         // Chat panel assets — only needed on the chat tab.
@@ -187,51 +180,6 @@ class AbilityHub_Admin {
             <?php endforeach; ?>
         </nav>
         <?php
-    }
-
-    // -------------------------------------------------------------------------
-    // AJAX: Execute an ability
-    // -------------------------------------------------------------------------
-
-    public function ajax_execute_ability(): void {
-        check_ajax_referer( 'abilityhub_nonce', 'nonce' );
-
-        if ( ! current_user_can( 'edit_posts' ) ) {
-            wp_send_json_error( [ 'message' => __( 'Permission denied.', 'abilityhub' ) ] );
-        }
-
-        $ability_name = sanitize_text_field( wp_unslash( $_POST['ability'] ?? '' ) );
-        $raw_input    = wp_unslash( $_POST['input'] ?? '{}' );
-        $input        = json_decode( $raw_input, true );
-
-        if ( ! $ability_name ) {
-            wp_send_json_error( [ 'message' => __( 'Ability name is required.', 'abilityhub' ) ] );
-        }
-
-        if ( ! is_array( $input ) ) {
-            wp_send_json_error( [ 'message' => __( 'Input must be valid JSON.', 'abilityhub' ) ] );
-        }
-
-        if ( ! function_exists( 'wp_get_ability' ) ) {
-            wp_send_json_error( [ 'message' => __( 'Abilities API not available. Requires WordPress 7.0+.', 'abilityhub' ) ] );
-        }
-
-        $ability = wp_get_ability( $ability_name );
-
-        if ( ! $ability ) {
-            wp_send_json_error( [
-                /* translators: %s: ability slug */
-                'message' => sprintf( __( 'Ability "%s" not found.', 'abilityhub' ), $ability_name ),
-            ] );
-        }
-
-        $result = $ability->execute( $input );
-
-        if ( is_wp_error( $result ) ) {
-            wp_send_json_error( [ 'message' => $result->get_error_message() ] );
-        }
-
-        wp_send_json_success( [ 'result' => $result ] );
     }
 
     // -------------------------------------------------------------------------

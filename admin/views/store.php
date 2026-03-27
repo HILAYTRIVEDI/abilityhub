@@ -100,12 +100,10 @@ $category_icons = [
                     <p class="abilityhub-ability-card__description"><?php echo esc_html( $ability['description'] ); ?></p>
                 </div>
                 <div class="abilityhub-ability-card__footer">
-                    <button class="button abilityhub-try-btn"
-                            data-ability="<?php echo esc_attr( $ability['name'] ); ?>"
-                            data-label="<?php echo esc_attr( $ability['label'] ); ?>"
-                            data-example="<?php echo esc_attr( wp_json_encode( $ability['example'] ) ); ?>">
-                        <?php esc_html_e( 'Try it', 'abilityhub' ); ?>
-                    </button>
+                    <a href="<?php echo esc_url( admin_url( 'tools.php?page=ai-abilities-explorer' ) ); ?>"
+                       class="button abilityhub-try-btn">
+                        <?php esc_html_e( 'Try it', 'abilityhub' ); ?> ↗
+                    </a>
                     <a href="<?php echo esc_url( rest_url( 'wp-abilities/v1/abilities/' . rawurlencode( $ability['name'] ) ) ); ?>"
                        target="_blank" class="abilityhub-link" title="<?php esc_attr_e( 'View REST schema', 'abilityhub' ); ?>">
                         REST ↗
@@ -115,32 +113,4 @@ $category_icons = [
         <?php endforeach; ?>
     </div>
 
-</div>
-
-<!-- Try it modal -->
-<div id="abilityhub-modal" class="abilityhub-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="abilityhub-modal-title">
-    <div class="abilityhub-modal__backdrop"></div>
-    <div class="abilityhub-modal__content">
-        <div class="abilityhub-modal__header">
-            <h2 id="abilityhub-modal-title" class="abilityhub-modal__title"></h2>
-            <button class="abilityhub-modal__close" aria-label="<?php esc_attr_e( 'Close', 'abilityhub' ); ?>">✕</button>
-        </div>
-        <div class="abilityhub-modal__body">
-            <div class="abilityhub-field">
-                <label for="modal-input"><?php esc_html_e( 'Input (JSON)', 'abilityhub' ); ?></label>
-                <textarea id="modal-input" class="abilityhub-textarea abilityhub-textarea--code" rows="8"></textarea>
-            </div>
-            <button id="modal-execute" class="button button-primary abilityhub-button">
-                <?php esc_html_e( 'Execute', 'abilityhub' ); ?>
-            </button>
-            <div id="modal-output" style="display:none;" class="abilityhub-modal__output">
-                <div class="abilityhub-output-header">
-                    <span id="modal-status" class="abilityhub-output-label"></span>
-                    <span id="modal-duration" class="abilityhub-output-meta"></span>
-                    <button class="abilityhub-copy-btn" data-target="modal-result"><?php esc_html_e( 'Copy', 'abilityhub' ); ?></button>
-                </div>
-                <pre id="modal-result" class="abilityhub-output-pre"></pre>
-            </div>
-        </div>
-    </div>
 </div>

@@ -110,12 +110,10 @@ if ( ! empty( $all_abilities ) ) {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <button class="button button-small abilityhub-try-btn"
-                                        data-ability="<?php echo esc_attr( $name ); ?>"
-                                        data-label="<?php echo esc_attr( $label ); ?>"
-                                        data-example="{}">
-                                    <?php esc_html_e( 'Try', 'abilityhub' ); ?>
-                                </button>
+                                <a href="<?php echo esc_url( admin_url( 'tools.php?page=ai-abilities-explorer' ) ); ?>"
+                                   class="button button-small">
+                                    <?php esc_html_e( 'Try', 'abilityhub' ); ?> ↗
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -124,32 +122,4 @@ if ( ! empty( $all_abilities ) ) {
         </div>
     <?php endif; ?>
 
-</div>
-
-<!-- Reuse the same Try it modal from the store (JS handles it globally) -->
-<div id="abilityhub-modal" class="abilityhub-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="abilityhub-modal-title">
-    <div class="abilityhub-modal__backdrop"></div>
-    <div class="abilityhub-modal__content">
-        <div class="abilityhub-modal__header">
-            <h2 id="abilityhub-modal-title" class="abilityhub-modal__title"></h2>
-            <button class="abilityhub-modal__close" aria-label="<?php esc_attr_e( 'Close', 'abilityhub' ); ?>">✕</button>
-        </div>
-        <div class="abilityhub-modal__body">
-            <div class="abilityhub-field">
-                <label for="modal-input"><?php esc_html_e( 'Input (JSON)', 'abilityhub' ); ?></label>
-                <textarea id="modal-input" class="abilityhub-textarea abilityhub-textarea--code" rows="8">{}</textarea>
-            </div>
-            <button id="modal-execute" class="button button-primary abilityhub-button">
-                <?php esc_html_e( 'Execute', 'abilityhub' ); ?>
-            </button>
-            <div id="modal-output" style="display:none;" class="abilityhub-modal__output">
-                <div class="abilityhub-output-header">
-                    <span id="modal-status" class="abilityhub-output-label"></span>
-                    <span id="modal-duration" class="abilityhub-output-meta"></span>
-                    <button class="abilityhub-copy-btn" data-target="modal-result"><?php esc_html_e( 'Copy', 'abilityhub' ); ?></button>
-                </div>
-                <pre id="modal-result" class="abilityhub-output-pre"></pre>
-            </div>
-        </div>
-    </div>
 </div>
