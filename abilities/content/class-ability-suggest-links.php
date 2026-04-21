@@ -13,6 +13,7 @@ class AbilityHub_Ability_Suggest_Links extends AbilityHub_Ability_Base {
 	protected string $label       = 'Suggest internal links';
 	protected string $description = 'Analyses post content and suggests 3-5 relevant internal links from existing posts.';
 	protected string $category    = 'seo';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

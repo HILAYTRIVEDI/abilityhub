@@ -13,6 +13,8 @@ class AbilityHub_Ability_Upsell_Copy extends AbilityHub_Ability_Base {
 	protected string $label       = 'Generate upsell copy';
 	protected string $description = 'Creates compelling upsell and cross-sell copy for related WooCommerce products.';
 	protected string $category    = 'ecommerce';
+	protected bool   $cacheable   = true;
+	protected int    $cache_ttl   = HOUR_IN_SECONDS;
 
 	protected array $input_schema = [
 		'type'       => 'object',

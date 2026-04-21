@@ -13,6 +13,7 @@ class AbilityHub_Ability_Moderate_Comment extends AbilityHub_Ability_Base {
 	protected string $label       = 'Moderate comment';
 	protected string $description = 'Analyses a comment and returns an approve, flag, or spam verdict with confidence score.';
 	protected string $category    = 'moderation';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

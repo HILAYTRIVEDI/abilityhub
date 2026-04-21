@@ -13,6 +13,8 @@ class AbilityHub_Ability_Rewrite_Tone extends AbilityHub_Ability_Base {
 	protected string $label       = 'Rewrite tone';
 	protected string $description = 'Rewrites content in a specified tone while preserving all facts and meaning.';
 	protected string $category    = 'editorial';
+	protected bool   $cacheable   = true;
+	protected int    $cache_ttl   = HOUR_IN_SECONDS;
 
 	protected array $input_schema = [
 		'type'       => 'object',

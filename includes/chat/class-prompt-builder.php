@@ -20,9 +20,19 @@ class AbilityHub_Prompt_Builder {
 	 * Build the system instruction that primes the AI with site context and the
 	 * structured intent protocol the chat handler expects.
 	 *
+	 * The result is cached for 5 minutes to avoid redundant DB queries on every
+	 * chat turn (post counts, plugin list, WooCommerce stats, etc.).
+	 *
 	 * @return string
 	 */
 	public function build_system_instruction(): string {
+		$cache_key = 'abilityhub_system_instr';
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached ) {
+			return $cached;
+		}
+
 		$ctx = $this->scanner->scan();
 
 		$abilities_list = empty( $ctx['registered_abilities'] )
@@ -47,7 +57,7 @@ class AbilityHub_Prompt_Builder {
 			$post_lines .= "  {$type}: {$count}\n";
 		}
 
-		return <<<SYSTEM
+		$instruction = <<<SYSTEM
 You are AbilityOperator, the AI Site Operator for the WordPress site "{$ctx['site_name']}" ({$ctx['site_url']}).
 You help administrators automate tasks using the site's registered AI abilities and workflows.
 Always refer to yourself as AbilityOperator, not by the site name.
@@ -97,5 +107,9 @@ activate_workflow — resume a paused workflow:
 
 If no action is needed, respond conversationally without a JSON block.
 SYSTEM;
+
+		set_transient( $cache_key, $instruction, 5 * MINUTE_IN_SECONDS );
+
+		return $instruction;
 	}
 }

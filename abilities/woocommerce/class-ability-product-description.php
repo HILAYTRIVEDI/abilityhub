@@ -13,6 +13,8 @@ class AbilityHub_Ability_Product_Description extends AbilityHub_Ability_Base {
 	protected string $label       = 'Generate product description';
 	protected string $description = 'Generates WooCommerce short description, long description, and meta description for a product.';
 	protected string $category    = 'ecommerce';
+	protected bool   $cacheable   = true;
+	protected int    $cache_ttl   = HOUR_IN_SECONDS;
 
 	protected array $input_schema = [
 		'type'       => 'object',

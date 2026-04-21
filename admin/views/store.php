@@ -100,10 +100,13 @@ $category_icons = [
                     <p class="abilityhub-ability-card__description"><?php echo esc_html( $ability['description'] ); ?></p>
                 </div>
                 <div class="abilityhub-ability-card__footer">
-                    <a href="<?php echo esc_url( admin_url( 'tools.php?page=ai-abilities-explorer' ) ); ?>"
-                       class="button abilityhub-try-btn">
-                        <?php esc_html_e( 'Try it', 'abilityhub' ); ?> ↗
-                    </a>
+                    <button type="button"
+                            class="button abilityhub-try-btn"
+                            data-ability="<?php echo esc_attr( $ability['name'] ); ?>"
+                            data-label="<?php echo esc_attr( $ability['label'] ); ?>"
+                            data-example="<?php echo esc_attr( wp_json_encode( $ability['example'] ?? [] ) ); ?>">
+                        <?php esc_html_e( 'Try it', 'abilityhub' ); ?>
+                    </button>
                     <a href="<?php echo esc_url( rest_url( 'wp-abilities/v1/abilities/' . rawurlencode( $ability['name'] ) ) ); ?>"
                        target="_blank" class="abilityhub-link" title="<?php esc_attr_e( 'View REST schema', 'abilityhub' ); ?>">
                         REST ↗

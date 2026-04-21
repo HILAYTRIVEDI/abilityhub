@@ -13,6 +13,7 @@ class AbilityHub_Ability_Generate_Block_Pattern extends AbilityHub_Ability_Base 
 	protected string $label       = 'Generate block pattern';
 	protected string $description = 'Generates a complete WordPress block pattern with PHP registration code and block markup.';
 	protected string $category    = 'developer';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

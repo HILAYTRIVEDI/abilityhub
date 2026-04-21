@@ -561,6 +561,45 @@
     background: rgba(237, 233, 254, 0.2);
 }
 
+.abilityhub-table__row--disabled td {
+    opacity: 0.55;
+}
+
+.abilityhub-table__row--disabled td:last-child {
+    opacity: 1; /* keep action buttons fully visible */
+}
+
+/* Ability enable / disable status badges */
+.abilityhub-status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.abilityhub-status-badge--enabled {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.abilityhub-status-badge--disabled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.abilityhub-actions-cell {
+    white-space: nowrap;
+}
+
+.abilityhub-installed__disabled-note {
+    color: var(--ah-warning, #92400e);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
 .abilityhub-code {
     font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
     font-size: 12px;

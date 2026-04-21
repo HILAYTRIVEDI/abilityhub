@@ -59,8 +59,20 @@ class AbilityHub_Admin {
         );
 
         wp_localize_script( 'abilityhub-admin', 'AbilityHub', [
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'nonce'    => wp_create_nonce( 'abilityhub_nonce' ),
+            'ajax_url'              => admin_url( 'admin-ajax.php' ),
+            'nonce'                 => wp_create_nonce( 'abilityhub_nonce' ),
+            'abilities_explorer_url' => admin_url( 'tools.php?page=ai-abilities-explorer' ),
+            'i18n'                  => [
+                'executing'      => __( 'Executing…', 'abilityhub' ),
+                'success'        => __( 'Success', 'abilityhub' ),
+                'error'          => __( 'Error', 'abilityhub' ),
+                'copied'         => __( 'Copied!', 'abilityhub' ),
+                'enable'         => __( 'Enable', 'abilityhub' ),
+                'disable'        => __( 'Disable', 'abilityhub' ),
+                'try'            => __( 'Try', 'abilityhub' ),
+                'status_enabled' => __( 'Enabled', 'abilityhub' ),
+                'status_disabled' => __( 'Disabled', 'abilityhub' ),
+            ],
         ] );
 
         // Chat panel assets — only needed on the chat tab.
@@ -129,6 +141,8 @@ class AbilityHub_Admin {
         } else {
             echo '<p>' . esc_html__( 'View not found.', 'abilityhub' ) . '</p>';
         }
+
+        $this->render_execute_modal();
 
         echo '</div>';
     }
@@ -214,6 +228,160 @@ class AbilityHub_Admin {
         }
 
         wp_send_json_success( [ 'abilities' => $data ] );
+    }
+
+    // -------------------------------------------------------------------------
+    // Shared execute modal (rendered once per page, used by Store + Installed)
+    // -------------------------------------------------------------------------
+
+    private function render_execute_modal(): void {
+        ?>
+        <div id="abilityhub-modal" class="abilityhub-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="abilityhub-modal-title">
+            <div class="abilityhub-modal__backdrop"></div>
+            <div class="abilityhub-modal__content">
+                <div class="abilityhub-modal__header">
+                    <h2 id="abilityhub-modal-title"></h2>
+                    <button type="button" class="abilityhub-modal__close" aria-label="<?php esc_attr_e( 'Close', 'abilityhub' ); ?>">✕</button>
+                </div>
+                <div class="abilityhub-modal__body">
+                    <label for="modal-input" class="abilityhub-modal__label">
+                        <?php esc_html_e( 'Input (JSON)', 'abilityhub' ); ?>
+                    </label>
+                    <textarea id="modal-input"
+                              class="abilityhub-textarea abilityhub-textarea--code abilityhub-modal__textarea"
+                              rows="6"
+                              spellcheck="false"></textarea>
+                </div>
+                <div class="abilityhub-modal__footer">
+                    <button type="button" id="modal-execute" class="button button-primary">
+                        <?php esc_html_e( 'Execute', 'abilityhub' ); ?>
+                    </button>
+                    <span id="modal-status" class="abilityhub-modal__status"></span>
+                </div>
+                <div id="modal-output" class="abilityhub-output" style="display:none;">
+                    <div class="abilityhub-output-header">
+                        <span class="abilityhub-output-label"></span>
+                        <span class="abilityhub-output-meta"></span>
+                    </div>
+                    <pre id="modal-result" class="abilityhub-output-pre"></pre>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    // -------------------------------------------------------------------------
+    // AJAX: Execute an ability (used by the dashboard quick-execute and modal)
+    // -------------------------------------------------------------------------
+
+    public function ajax_execute_ability(): void {
+        check_ajax_referer( 'abilityhub_nonce', 'nonce' );
+
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            wp_send_json_error( [ 'message' => __( 'Permission denied.', 'abilityhub' ) ] );
+        }
+
+        $ability_name = sanitize_text_field( wp_unslash( $_POST['ability'] ?? '' ) );
+        $raw_input    = wp_unslash( $_POST['input'] ?? '{}' );
+
+        if ( empty( $ability_name ) ) {
+            wp_send_json_error( [ 'message' => __( 'No ability specified.', 'abilityhub' ) ] );
+        }
+
+        // Refuse to run abilities the admin has explicitly disabled.
+        $disabled = (array) get_option( 'abilityhub_disabled_abilities', [] );
+        if ( in_array( $ability_name, $disabled, true ) ) {
+            wp_send_json_error( [ 'message' => __( 'This ability has been disabled by the site administrator.', 'abilityhub' ) ] );
+        }
+
+        // Parse input JSON.
+        $input = json_decode( $raw_input, true );
+        if ( ! is_array( $input ) ) {
+            $input = [];
+        }
+
+        // Try the WP 7.0 Abilities API first.
+        if ( function_exists( 'wp_execute_ability' ) ) {
+            $result = wp_execute_ability( $ability_name, $input );
+
+            if ( is_wp_error( $result ) ) {
+                wp_send_json_error( [ 'message' => $result->get_error_message() ] );
+            }
+
+            wp_send_json_success( [ 'result' => $result ] );
+        }
+
+        // Fallback: look up the ability object and call execute() directly.
+        if ( function_exists( 'wp_get_ability' ) ) {
+            $ability = wp_get_ability( $ability_name );
+
+            if ( ! $ability ) {
+                wp_send_json_error( [
+                    'message' => sprintf(
+                        /* translators: %s: ability slug */
+                        __( 'Ability "%s" is not registered.', 'abilityhub' ),
+                        $ability_name
+                    ),
+                ] );
+            }
+
+            if ( method_exists( $ability, 'execute' ) ) {
+                $result = $ability->execute( $input );
+
+                if ( is_wp_error( $result ) ) {
+                    wp_send_json_error( [ 'message' => $result->get_error_message() ] );
+                }
+
+                wp_send_json_success( [ 'result' => $result ] );
+            }
+        }
+
+        wp_send_json_error( [
+            'message' => __( 'WordPress Abilities API is not available on this installation. Upgrade to WordPress 7.0+ or install the AI Experiments plugin.', 'abilityhub' ),
+        ] );
+    }
+
+    // -------------------------------------------------------------------------
+    // AJAX: Enable / disable an AbilityHub ability
+    // -------------------------------------------------------------------------
+
+    public function ajax_toggle_ability(): void {
+        check_ajax_referer( 'abilityhub_nonce', 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => __( 'Permission denied.', 'abilityhub' ) ] );
+        }
+
+        $ability = sanitize_text_field( wp_unslash( $_POST['ability'] ?? '' ) );
+        $enable  = rest_is_boolean( $_POST['enable'] ?? null )
+            ? rest_sanitize_boolean( $_POST['enable'] )
+            : (bool) ( $_POST['enable'] ?? false );
+
+        if ( empty( $ability ) ) {
+            wp_send_json_error( [ 'message' => __( 'Invalid ability name.', 'abilityhub' ) ] );
+        }
+
+        // Only AbilityHub's own abilities can be toggled here.
+        if ( ! str_starts_with( $ability, 'abilityhub/' ) ) {
+            wp_send_json_error( [ 'message' => __( 'Only AbilityHub abilities can be toggled.', 'abilityhub' ) ] );
+        }
+
+        $disabled = (array) get_option( 'abilityhub_disabled_abilities', [] );
+
+        if ( $enable ) {
+            $disabled = array_values( array_diff( $disabled, [ $ability ] ) );
+        } else {
+            if ( ! in_array( $ability, $disabled, true ) ) {
+                $disabled[] = $ability;
+            }
+        }
+
+        update_option( 'abilityhub_disabled_abilities', $disabled );
+
+        wp_send_json_success( [
+            'ability' => $ability,
+            'enabled' => $enable,
+        ] );
     }
 
     // -------------------------------------------------------------------------

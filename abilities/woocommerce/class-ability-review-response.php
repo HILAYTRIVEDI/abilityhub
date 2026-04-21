@@ -13,6 +13,8 @@ class AbilityHub_Ability_Review_Response extends AbilityHub_Ability_Base {
 	protected string $label       = 'Write review response';
 	protected string $description = 'Generates a professional, brand-appropriate response to a customer product review.';
 	protected string $category    = 'ecommerce';
+	protected bool   $cacheable   = true;
+	protected int    $cache_ttl   = HOUR_IN_SECONDS;
 
 	protected array $input_schema = [
 		'type'       => 'object',

@@ -31,11 +31,29 @@ abstract class AbilityHub_Ability_Base {
     protected bool $show_in_rest = true;
 
     /**
+     * Whether to cache AI responses for identical inputs.
+     * Set to true in subclasses to enable transient-based response caching.
+     */
+    protected bool $cacheable = false;
+
+    /**
+     * How long (in seconds) to cache AI responses when $cacheable is true.
+     * Defaults to 24 hours. Creative abilities (temp ≥ 0.6) should use HOUR_IN_SECONDS.
+     */
+    protected int $cache_ttl = DAY_IN_SECONDS;
+
+    /**
      * Register this ability with WordPress.
      * Must be called inside wp_abilities_api_init.
      */
     public function register(): void {
         if ( ! function_exists( 'wp_register_ability' ) ) {
+            return;
+        }
+
+        // Respect admin's enable/disable setting for this ability.
+        $disabled = (array) get_option( 'abilityhub_disabled_abilities', [] );
+        if ( in_array( $this->name, $disabled, true ) ) {
             return;
         }
 
@@ -45,10 +63,36 @@ abstract class AbilityHub_Ability_Base {
             'category'            => $this->category,
             'input_schema'        => $this->input_schema,
             'output_schema'       => $this->output_schema,
-            'execute_callback'    => [ $this, 'execute' ],
+            'execute_callback'    => $this->cacheable ? [ $this, 'cached_execute' ] : [ $this, 'execute' ],
             'permission_callback' => [ $this, 'check_permission' ],
             'meta'                => [ 'show_in_rest' => $this->show_in_rest ],
         ] );
+    }
+
+    /**
+     * Cache-aware wrapper around execute().
+     * Used automatically when $cacheable = true. Results are stored as transients
+     * keyed by ability name + sorted input hash to prevent redundant API calls.
+     *
+     * @param array $input Validated input matching input_schema.
+     * @return array|WP_Error
+     */
+    public function cached_execute( array $input ): array|WP_Error {
+        ksort( $input );
+        $cache_key = 'abilityhub_resp_' . md5( $this->name . wp_json_encode( $input ) );
+
+        $cached = get_transient( $cache_key );
+        if ( false !== $cached ) {
+            return $cached;
+        }
+
+        $result = $this->execute( $input );
+
+        if ( ! is_wp_error( $result ) ) {
+            set_transient( $cache_key, $result, $this->cache_ttl );
+        }
+
+        return $result;
     }
 
     /**

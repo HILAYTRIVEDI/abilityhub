@@ -27,8 +27,10 @@ class AbilityHub_Loader {
             $admin = new AbilityHub_Admin();
             add_action( 'admin_menu',            [ $admin, 'add_menu_page'           ] );
             add_action( 'admin_enqueue_scripts', [ $admin, 'enqueue_assets'          ] );
-            add_action( 'wp_ajax_abilityhub_get_abilities', [ $admin, 'ajax_get_all_abilities' ] );
-            add_action( 'wp_ajax_abilityhub_export_logs',   [ $admin, 'ajax_export_logs'       ] );
+            add_action( 'wp_ajax_abilityhub_execute',         [ $admin, 'ajax_execute_ability'  ] );
+            add_action( 'wp_ajax_abilityhub_get_abilities',  [ $admin, 'ajax_get_all_abilities' ] );
+            add_action( 'wp_ajax_abilityhub_export_logs',    [ $admin, 'ajax_export_logs'       ] );
+            add_action( 'wp_ajax_abilityhub_toggle_ability', [ $admin, 'ajax_toggle_ability'    ] );
             add_action( 'admin_post_abilityhub_save_settings',   [ $admin, 'save_settings'          ] );
             add_action( 'admin_post_abilityhub_approve_workflow', [ $this, 'handle_approve_workflow' ] );
             add_action( 'admin_post_abilityhub_reject_workflow',  [ $this, 'handle_reject_workflow'  ] );

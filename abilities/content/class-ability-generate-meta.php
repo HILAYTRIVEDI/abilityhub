@@ -13,6 +13,7 @@ class AbilityHub_Ability_Generate_Meta extends AbilityHub_Ability_Base {
 	protected string $label       = 'Generate meta description';
 	protected string $description = 'Generates an SEO title and 155-character meta description from post content.';
 	protected string $category    = 'seo';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

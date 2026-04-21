@@ -13,6 +13,7 @@ class AbilityHub_Ability_Write_Hook_Docs extends AbilityHub_Ability_Base {
 	protected string $label       = 'Write WP hook docs';
 	protected string $description = 'Generates a PHPDoc docblock and usage example for a WordPress action or filter hook.';
 	protected string $category    = 'developer';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

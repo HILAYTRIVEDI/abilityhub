@@ -13,6 +13,7 @@ class AbilityHub_Ability_Suggest_Filename extends AbilityHub_Ability_Base {
 	protected string $label       = 'Suggest image filename';
 	protected string $description = 'Suggests an SEO-friendly, descriptive filename for an image based on context.';
 	protected string $category    = 'media';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

@@ -13,6 +13,7 @@ class AbilityHub_Ability_Summarise_Post extends AbilityHub_Ability_Base {
 	protected string $label       = 'Summarise post';
 	protected string $description = 'Generates a concise summary and one-sentence TL;DR from post content.';
 	protected string $category    = 'editorial';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

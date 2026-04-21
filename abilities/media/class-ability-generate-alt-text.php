@@ -13,6 +13,7 @@ class AbilityHub_Ability_Generate_Alt_Text extends AbilityHub_Ability_Base {
 	protected string $label       = 'Generate alt text';
 	protected string $description = 'Generates accessible, descriptive alt text and optional caption for an image using AI vision.';
 	protected string $category    = 'accessibility';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

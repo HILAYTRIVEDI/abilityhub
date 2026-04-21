@@ -13,6 +13,7 @@ class AbilityHub_Ability_Explain_Php_Error extends AbilityHub_Ability_Base {
 	protected string $label       = 'Explain PHP error';
 	protected string $description = 'Explains a PHP or WordPress error in plain language and suggests a fix with a code example.';
 	protected string $category    = 'developer';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',

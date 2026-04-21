@@ -273,6 +273,83 @@
     } );
 
     // -------------------------------------------------------------------------
+    // Toggle ability enable / disable (Installed tab)
+    // -------------------------------------------------------------------------
+
+    $( document ).on( 'click', '.abilityhub-toggle-ability', function () {
+        const $btn    = $( this );
+        const ability = $btn.data( 'ability' );
+        const enable  = parseInt( $btn.data( 'enable' ), 10 ) === 1;
+
+        $btn.prop( 'disabled', true );
+
+        $.post( config.ajax_url, {
+            action:  'abilityhub_toggle_ability',
+            nonce:   config.nonce,
+            ability: ability,
+            enable:  enable ? 1 : 0,
+        } )
+        .done( function ( response ) {
+            if ( ! response.success ) {
+                alert( response.data.message || 'Error toggling ability.' );
+                $btn.prop( 'disabled', false );
+                return;
+            }
+
+            const $row        = $btn.closest( 'tr' );
+            const nowEnabled  = response.data.enabled;
+
+            // Update row style.
+            $row.toggleClass( 'abilityhub-table__row--disabled', ! nowEnabled );
+
+            // Update status badge.
+            const $statusCell = $row.find( '.abilityhub-status-badge' );
+            if ( nowEnabled ) {
+                $statusCell.removeClass( 'abilityhub-status-badge--disabled' )
+                           .addClass( 'abilityhub-status-badge--enabled' )
+                           .text( config.i18n.status_enabled );
+            } else {
+                $statusCell.removeClass( 'abilityhub-status-badge--enabled' )
+                           .addClass( 'abilityhub-status-badge--disabled' )
+                           .text( config.i18n.status_disabled );
+            }
+
+            // Update endpoint cell.
+            const $endpointCell = $row.find( 'td:nth-child(5)' );
+            if ( nowEnabled ) {
+                const endpointPath = '/wp-abilities/v1/abilities/' + ability + '/execute';
+                $endpointCell.html(
+                    '<a href="#" class="abilityhub-link" target="_blank"><code>' + endpointPath + '</code></a>'
+                );
+            } else {
+                $endpointCell.html( '<span class="abilityhub-muted">—</span>' );
+            }
+
+            // Flip the button to the opposite action.
+            $btn.data( 'enable', nowEnabled ? 0 : 1 );
+            $btn.text( nowEnabled ? config.i18n.disable : config.i18n.enable );
+            $btn.prop( 'disabled', false );
+
+            // Show/hide Try button.
+            const $tryBtn = $row.find( 'a.button' );
+            if ( nowEnabled ) {
+                if ( ! $tryBtn.length ) {
+                    const tryUrl = config.abilities_explorer_url || '#';
+                    $btn.before(
+                        '<a href="' + tryUrl + '" class="button button-small">' + config.i18n.try + ' ↗</a> '
+                    );
+                }
+            } else {
+                $tryBtn.remove();
+            }
+        } )
+        .fail( function () {
+            alert( 'Request failed. Please try again.' );
+            $btn.prop( 'disabled', false );
+        } );
+    } );
+
+    // -------------------------------------------------------------------------
     // Dismiss admin notices
     // -------------------------------------------------------------------------
 

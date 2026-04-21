@@ -13,6 +13,7 @@ class AbilityHub_Ability_Translate_Block extends AbilityHub_Ability_Base {
 	protected string $label       = 'Translate block';
 	protected string $description = 'Translates block content into a target language, preserving block markup.';
 	protected string $category    = 'multilingual';
+	protected bool   $cacheable   = true;
 
 	protected array $input_schema = [
 		'type'       => 'object',
