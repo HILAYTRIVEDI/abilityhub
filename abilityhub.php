@@ -71,6 +71,7 @@ abilityhub_load_ability_files();
 
 register_activation_hook( __FILE__, [ 'AbilityHub_Activator', 'activate' ] );
 register_deactivation_hook( __FILE__, [ 'AbilityHub_Deactivator', 'deactivate' ] );
+add_action( 'plugins_loaded', [ 'AbilityHub_Activator', 'maybe_upgrade' ] );
 
 function abilityhub_run(): void {
     $loader = new AbilityHub_Loader();

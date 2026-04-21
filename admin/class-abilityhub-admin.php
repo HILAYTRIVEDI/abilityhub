@@ -30,6 +30,7 @@ class AbilityHub_Admin {
         add_submenu_page( 'abilityhub', __( 'Execution Logs', 'abilityhub' ), __( 'Execution Logs', 'abilityhub' ), 'edit_posts',      'abilityhub&tab=logs',           [ $this, 'render_page' ] );
         add_submenu_page( 'abilityhub', __( 'Workflows', 'abilityhub' ),      __( 'Workflows', 'abilityhub' ),      'manage_options',  'abilityhub&tab=workflows',      [ $this, 'render_page' ] );
         add_submenu_page( 'abilityhub', __( 'AI Operator', 'abilityhub' ),   __( 'AI Operator', 'abilityhub' ),   'edit_posts',      'abilityhub&tab=chat',           [ $this, 'render_page' ] );
+        add_submenu_page( 'abilityhub', __( 'Token Usage', 'abilityhub' ),     __( 'Token Usage', 'abilityhub' ),    'manage_options',  'abilityhub&tab=usage',          [ $this, 'render_page' ] );
         add_submenu_page( 'abilityhub', __( 'Settings', 'abilityhub' ),       __( 'Settings', 'abilityhub' ),       'manage_options',  'abilityhub&tab=settings',       [ $this, 'render_page' ] );
     }
 
@@ -121,13 +122,13 @@ class AbilityHub_Admin {
 
         $tab = sanitize_key( $_GET['tab'] ?? 'dashboard' );
 
-        $allowed_tabs = [ 'dashboard', 'store', 'installed', 'logs', 'workflows', 'chat', 'settings' ];
+        $allowed_tabs = [ 'dashboard', 'store', 'installed', 'logs', 'workflows', 'chat', 'usage', 'settings' ];
         if ( ! in_array( $tab, $allowed_tabs, true ) ) {
             $tab = 'dashboard';
         }
 
         // These tabs require manage_options.
-        if ( in_array( $tab, [ 'settings', 'workflows' ], true ) && ! current_user_can( 'manage_options' ) ) {
+        if ( in_array( $tab, [ 'settings', 'workflows', 'usage' ], true ) && ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You do not have permission to access this page.', 'abilityhub' ) );
         }
 
@@ -169,6 +170,7 @@ class AbilityHub_Admin {
             'logs'      => __( 'Execution Logs', 'abilityhub' ),
             'workflows' => $workflows_label,
             'chat'      => __( 'AI Operator', 'abilityhub' ),
+            'usage'     => __( 'Token Usage', 'abilityhub' ),
             'settings'  => __( 'Settings', 'abilityhub' ),
         ];
         ?>
@@ -182,7 +184,7 @@ class AbilityHub_Admin {
         <nav class="abilityhub-tabs nav-tab-wrapper">
             <?php foreach ( $tabs as $slug => $label ) : ?>
                 <?php
-                if ( in_array( $slug, [ 'settings', 'workflows' ], true ) && ! current_user_can( 'manage_options' ) ) {
+                if ( in_array( $slug, [ 'settings', 'workflows', 'usage' ], true ) && ! current_user_can( 'manage_options' ) ) {
                     continue; // manage_options-only tabs.
                 }
                 $url    = add_query_arg( [ 'page' => 'abilityhub', 'tab' => $slug ], admin_url( 'admin.php' ) );

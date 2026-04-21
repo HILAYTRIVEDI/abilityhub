@@ -43,6 +43,13 @@ abstract class AbilityHub_Ability_Base {
     protected int $cache_ttl = DAY_IN_SECONDS;
 
     /**
+     * Tracks which ability is currently executing so the token tracker can
+     * attribute AI calls to the correct ability slug. PHP is single-threaded,
+     * so a static property is safe here.
+     */
+    public static string $current_ability = '';
+
+    /**
      * Register this ability with WordPress.
      * Must be called inside wp_abilities_api_init.
      */
@@ -63,16 +70,29 @@ abstract class AbilityHub_Ability_Base {
             'category'            => $this->category,
             'input_schema'        => $this->input_schema,
             'output_schema'       => $this->output_schema,
-            'execute_callback'    => $this->cacheable ? [ $this, 'cached_execute' ] : [ $this, 'execute' ],
+            'execute_callback'    => [ $this, 'run' ],
             'permission_callback' => [ $this, 'check_permission' ],
             'meta'                => [ 'show_in_rest' => $this->show_in_rest ],
         ] );
     }
 
     /**
+     * Entry point registered with WordPress. Sets the static context for the
+     * token tracker, then routes through caching or directly to execute().
+     *
+     * @param array $input Validated input matching input_schema.
+     * @return array|WP_Error
+     */
+    public function run( array $input ): array|WP_Error {
+        self::$current_ability = $this->name;
+        $result = $this->cacheable ? $this->cached_execute( $input ) : $this->execute( $input );
+        self::$current_ability = '';
+        return $result;
+    }
+
+    /**
      * Cache-aware wrapper around execute().
-     * Used automatically when $cacheable = true. Results are stored as transients
-     * keyed by ability name + sorted input hash to prevent redundant API calls.
+     * Results are stored as transients keyed by ability name + sorted input hash.
      *
      * @param array $input Validated input matching input_schema.
      * @return array|WP_Error

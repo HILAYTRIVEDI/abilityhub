@@ -906,3 +906,188 @@
 .abilityhub-try-btn {
     white-space: nowrap;
 }
+
+/* =========================================================================
+   Token Usage tab
+   ========================================================================= */
+
+.abilityhub-usage__header {
+    margin-bottom: 16px;
+}
+
+.abilityhub-usage__header h2 {
+    margin-bottom: 4px;
+}
+
+.abilityhub-usage__subtitle {
+    color: #646970;
+    margin: 0 0 16px;
+}
+
+/* Period shortcut bar */
+.abilityhub-usage__period-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.abilityhub-period-btn {
+    display: inline-block;
+    padding: 5px 14px;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    background: #fff;
+    color: #1d2327;
+    font-size: 13px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.abilityhub-period-btn:hover {
+    background: #f0f0f1;
+    border-color: #8c8f94;
+    color: #1d2327;
+}
+
+.abilityhub-period-btn.abilityhub-period--active {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+}
+
+/* Summary stat cards */
+.abilityhub-usage__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.abilityhub-stat-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.abilityhub-stat-card__icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.abilityhub-stat-card__body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.abilityhub-stat-card__value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1d2327;
+    line-height: 1.2;
+}
+
+.abilityhub-stat-card__label {
+    font-size: 12px;
+    color: #646970;
+    margin-top: 2px;
+}
+
+/* Section headings */
+.abilityhub-usage__section {
+    margin-bottom: 32px;
+}
+
+.abilityhub-usage__section h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Numeric columns right-align */
+.abilityhub-table--usage th.num,
+.abilityhub-table--usage td.num {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Capability badge */
+.abilityhub-capability-badge {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: #f0f0f1;
+    white-space: nowrap;
+}
+
+/* Ability badge */
+.abilityhub-ability-badge {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: #e8f0fe;
+    color: #1a56db;
+    white-space: nowrap;
+}
+
+.abilityhub-ability-badge--chat {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Active filter badge */
+.abilityhub-filter-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: normal;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: #e8f0fe;
+    color: #1a56db;
+    border: 1px solid #c7d9f8;
+}
+
+.abilityhub-filter-badge__remove {
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.abilityhub-filter-badge__remove:hover {
+    color: #dc2626;
+}
+
+/* Small code label */
+.abilityhub-code--small {
+    font-size: 10px;
+    padding: 1px 4px;
+}
+
+/* Empty state variation */
+.abilityhub-empty-state--small {
+    padding: 20px;
+    text-align: center;
+    background: #f9f9f9;
+    border: 1px dashed #c3c4c7;
+    border-radius: 4px;
+}
+
+.abilityhub-empty-state--small p {
+    margin: 0;
+    color: #646970;
+}

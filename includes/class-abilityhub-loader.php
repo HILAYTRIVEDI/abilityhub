@@ -16,6 +16,10 @@ class AbilityHub_Loader {
         // Register all 15 abilities
         add_action( 'wp_abilities_api_init', [ $this, 'register_abilities' ] );
 
+        // Track token usage for every AI call across all providers
+        $token_tracker = new AbilityHub_Token_Tracker();
+        add_action( 'wp_ai_client_after_generate_result', [ $token_tracker, 'track' ] );
+
         // Purge old logs daily
         add_action( 'abilityhub_daily_cleanup', [ 'AbilityHub_Logger', 'purge_old_logs' ] );
         if ( ! wp_next_scheduled( 'abilityhub_daily_cleanup' ) ) {
