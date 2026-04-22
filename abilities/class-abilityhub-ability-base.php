@@ -50,17 +50,36 @@ abstract class AbilityHub_Ability_Base {
     public static string $current_ability = '';
 
     /**
+     * Static registry of all instantiated and registered abilities, keyed by
+     * ability slug. Populated in register(). Lets the intent executor call
+     * abilities directly without depending on wp_execute_ability().
+     *
+     * @var array<string, static>
+     */
+    public static array $registry = [];
+
+    /**
      * Register this ability with WordPress.
      * Must be called inside wp_abilities_api_init.
      */
     public function register(): void {
-        if ( ! function_exists( 'wp_register_ability' ) ) {
-            return;
-        }
-
         // Respect admin's enable/disable setting for this ability.
         $disabled = (array) get_option( 'abilityhub_disabled_abilities', [] );
         if ( in_array( $this->name, $disabled, true ) ) {
+            return;
+        }
+
+        // Always store in the static registry so the intent executor can call
+        // abilities directly without depending on wp_execute_ability() or even
+        // having the WP Abilities API available.
+        self::$registry[ $this->name ] = $this;
+
+        if ( ! function_exists( 'wp_register_ability' ) ) {
+            return; // Registry populated; WP Abilities API registration skipped.
+        }
+
+        // Avoid duplicate registration if called more than once (e.g. init + wp_abilities_api_init).
+        if ( function_exists( 'wp_get_ability' ) && wp_get_ability( $this->name ) ) {
             return;
         }
 
@@ -161,6 +180,42 @@ abstract class AbilityHub_Ability_Base {
      */
     protected function ai_client( string $prompt ) {
         return AbilityHub_AI_Client::get_builder( $prompt );
+    }
+
+    /**
+     * Guard: ensure the active provider supports text generation before calling generate_text().
+     * Mirrors the pattern introduced in WP AI plugin v0.7.0 (PR #362).
+     *
+     * @param object $builder The fluent prompt builder from ai_client().
+     * @param string $message Optional custom error message.
+     * @return object|WP_Error The builder unchanged, or WP_Error if unsupported.
+     */
+    protected function ensure_text_generation_supported( $builder, string $message = '' ) {
+        if ( method_exists( $builder, 'is_supported_for_text_generation' ) && ! $builder->is_supported_for_text_generation() ) {
+            return new WP_Error(
+                'unsupported_provider',
+                $message ?: __( 'The active AI provider does not support text generation.', 'abilityhub' )
+            );
+        }
+        return $builder;
+    }
+
+    /**
+     * Guard: ensure the active provider supports image generation.
+     * Mirrors the pattern introduced in WP AI plugin v0.7.0 (PR #362).
+     *
+     * @param object $builder The fluent prompt builder from ai_client().
+     * @param string $message Optional custom error message.
+     * @return object|WP_Error The builder unchanged, or WP_Error if unsupported.
+     */
+    protected function ensure_image_generation_supported( $builder, string $message = '' ) {
+        if ( method_exists( $builder, 'is_supported_for_image_generation' ) && ! $builder->is_supported_for_image_generation() ) {
+            return new WP_Error(
+                'unsupported_provider',
+                $message ?: __( 'The active AI provider does not support image generation.', 'abilityhub' )
+            );
+        }
+        return $builder;
     }
 
     /**

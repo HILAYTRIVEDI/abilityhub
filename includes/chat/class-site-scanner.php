@@ -38,8 +38,10 @@ class AbilityHub_Site_Scanner {
 		$types  = get_post_types( [ 'public' => true ], 'names' );
 
 		foreach ( $types as $type ) {
-			$result          = wp_count_posts( $type );
-			$counts[ $type ] = (int) ( $result->publish ?? 0 );
+			$count = (int) ( wp_count_posts( $type )->publish ?? 0 );
+			if ( $count > 0 ) {
+				$counts[ $type ] = $count;
+			}
 		}
 
 		return $counts;

@@ -58,7 +58,7 @@ class AbilityHub_Chat_Handler {
 		}
 
 		$system_instruction = $this->prompt_builder->build_system_instruction();
-		$history            = $this->conversation_store->get_history_for_ai( $user_id );
+		$history            = $this->conversation_store->get_history_for_ai( $user_id, 6 );
 
 		$builder = AbilityHub_AI_Client::get_builder( $user_message );
 		if ( is_wp_error( $builder ) ) {
@@ -87,6 +87,19 @@ class AbilityHub_Chat_Handler {
 
 		if ( null !== $intent ) {
 			$intent_result = $this->intent_executor->execute( $intent, $user_id );
+
+			// Inject the ability result back into conversation history so the AI can
+			// use output data (e.g. post IDs from get-posts) in follow-up turns.
+			if ( ! empty( $intent_result['data'] ) ) {
+				$ability_name = $intent['ability'] ?? $intent['intent'] ?? 'unknown';
+				$result_json  = wp_json_encode( $intent_result['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+				$feedback     = sprintf(
+					'[AbilityHub] Ability "%s" result: %s',
+					$ability_name,
+					$result_json
+				);
+				$this->conversation_store->append( $user_id, 'user', $feedback );
+			}
 		}
 
 		return [

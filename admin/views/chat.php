@@ -14,16 +14,29 @@ defined( 'ABSPATH' ) || exit;
 			<?php esc_html_e( 'AI Site Operator', 'abilityhub' ); ?>
 		</h2>
 		<p class="abilityhub-chat-sidebar__desc">
-			<?php esc_html_e( 'Ask me to run abilities, create workflows, or batch-process your content using natural language.', 'abilityhub' ); ?>
+			<?php esc_html_e( 'I can manage your WordPress site, fetch real-time data from the web, run AI abilities, and automate workflows. I will not assist with illegal or harmful requests.', 'abilityhub' ); ?>
 		</p>
 
-		<h3><?php esc_html_e( 'Example prompts', 'abilityhub' ); ?></h3>
+		<h3><?php esc_html_e( 'Site management', 'abilityhub' ); ?></h3>
 		<ul class="abilityhub-chat-examples">
-			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'How many posts do I have?', 'abilityhub' ); ?>"><?php esc_html_e( 'How many posts do I have?', 'abilityhub' ); ?></a></li>
-			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Generate SEO meta for my last 10 published posts', 'abilityhub' ); ?>"><?php esc_html_e( 'Generate SEO meta for last 10 posts', 'abilityhub' ); ?></a></li>
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Create a new draft post titled "Getting Started with AI" with some introductory content', 'abilityhub' ); ?>"><?php esc_html_e( 'Create a draft post', 'abilityhub' ); ?></a></li>
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Show me all my draft posts', 'abilityhub' ); ?>"><?php esc_html_e( 'List draft posts', 'abilityhub' ); ?></a></li>
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Update my site tagline to "Powered by AI"', 'abilityhub' ); ?>"><?php esc_html_e( 'Update site tagline', 'abilityhub' ); ?></a></li>
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Change posts per page to 6', 'abilityhub' ); ?>"><?php esc_html_e( 'Change posts per page', 'abilityhub' ); ?></a></li>
+		</ul>
+
+		<h3><?php esc_html_e( 'Real-time data', 'abilityhub' ); ?></h3>
+		<ul class="abilityhub-chat-examples">
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Fetch the top 5 trending AI news from TechCrunch and summarise them', 'abilityhub' ); ?>"><?php esc_html_e( 'Top AI news today', 'abilityhub' ); ?></a></li>
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Fetch the latest WordPress news and create a draft post summarising it', 'abilityhub' ); ?>"><?php esc_html_e( 'WP news → draft post', 'abilityhub' ); ?></a></li>
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Fetch content from https://wordpress.org/news/feed/ and show me the latest 5 headlines', 'abilityhub' ); ?>"><?php esc_html_e( 'Read an RSS feed', 'abilityhub' ); ?></a></li>
+		</ul>
+
+		<h3><?php esc_html_e( 'AI abilities', 'abilityhub' ); ?></h3>
+		<ul class="abilityhub-chat-examples">
+			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Generate SEO meta for my last 10 published posts', 'abilityhub' ); ?>"><?php esc_html_e( 'Batch SEO meta for 10 posts', 'abilityhub' ); ?></a></li>
 			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Create a workflow that generates alt text whenever an image is uploaded', 'abilityhub' ); ?>"><?php esc_html_e( 'Auto alt-text on image upload', 'abilityhub' ); ?></a></li>
 			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'What AI abilities are available?', 'abilityhub' ); ?>"><?php esc_html_e( 'List available abilities', 'abilityhub' ); ?></a></li>
-			<li><a href="#" class="abilityhub-chat-example" data-prompt="<?php esc_attr_e( 'Deactivate the abilityhub/auto-seo workflow', 'abilityhub' ); ?>"><?php esc_html_e( 'Deactivate auto-SEO workflow', 'abilityhub' ); ?></a></li>
 		</ul>
 
 		<div class="abilityhub-chat-sidebar__actions">
@@ -40,7 +53,7 @@ defined( 'ABSPATH' ) || exit;
 				<div class="abilityhub-chat-message__body">
 					<?php echo wp_kses_post( sprintf(
 						/* translators: %s: site name */
-						__( 'Hello! I\'m <strong>AbilityOperator</strong>, your AI Site Operator for %s. I can help you run abilities, create workflows, and batch-process your content. What would you like to do?', 'abilityhub' ),
+						__( 'Hello! I\'m <strong>AbilityOperator</strong>, your AI Site Operator for %s. I can manage your site, fetch real-time data from the web (news, RSS feeds, APIs), run AI abilities, and automate workflows — all from this chat. I don\'t have access to the internet for browsing, but I can fetch content from specific URLs and feeds you ask for. I won\'t assist with illegal or harmful requests. What would you like to do?', 'abilityhub' ),
 						'<strong>' . esc_html( get_bloginfo( 'name' ) ) . '</strong>'
 					) ); ?>
 				</div>

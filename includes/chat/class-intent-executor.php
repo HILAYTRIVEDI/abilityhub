@@ -50,25 +50,59 @@ class AbilityHub_Intent_Executor {
 	 * @return array{success: bool, message: string, data: mixed}
 	 */
 	private function run_ability( array $intent ): array {
-		if ( ! function_exists( 'wp_execute_ability' ) ) {
+		$ability_name = $intent['ability'];
+		$input        = $intent['input'];
+
+		// Primary path: use AbilityHub's own static registry (populated when
+		// abilities are registered, works without the WP 7.0 Abilities API).
+		if ( isset( AbilityHub_Ability_Base::$registry[ $ability_name ] ) ) {
+			$ability = AbilityHub_Ability_Base::$registry[ $ability_name ];
+
+			if ( ! $ability->check_permission() ) {
+				return [
+					'success' => false,
+					/* translators: %s: ability name */
+					'message' => sprintf( __( 'Permission denied to run ability "%s".', 'abilityhub' ), $ability_name ),
+					'data'    => null,
+				];
+			}
+
+			$result = $ability->run( $input );
+
+			if ( is_wp_error( $result ) ) {
+				return [ 'success' => false, 'message' => $result->get_error_message(), 'data' => null ];
+			}
+
 			return [
-				'success' => false,
-				'message' => __( 'Abilities API not available. Requires WordPress 7.0+.', 'abilityhub' ),
-				'data'    => null,
+				'success' => true,
+				/* translators: %s: ability name */
+				'message' => sprintf( __( 'Ability "%s" executed successfully.', 'abilityhub' ), $ability_name ),
+				'data'    => $result,
 			];
 		}
 
-		$result = wp_execute_ability( $intent['ability'], $intent['input'] );
+		// Secondary path: WP 7.0 Abilities API (for third-party abilities not in
+		// AbilityHub's registry).
+		if ( function_exists( 'wp_execute_ability' ) ) {
+			$result = wp_execute_ability( $ability_name, $input );
 
-		if ( is_wp_error( $result ) ) {
-			return [ 'success' => false, 'message' => $result->get_error_message(), 'data' => null ];
+			if ( is_wp_error( $result ) ) {
+				return [ 'success' => false, 'message' => $result->get_error_message(), 'data' => null ];
+			}
+
+			return [
+				'success' => true,
+				/* translators: %s: ability name */
+				'message' => sprintf( __( 'Ability "%s" executed successfully.', 'abilityhub' ), $ability_name ),
+				'data'    => $result,
+			];
 		}
 
 		return [
-			'success' => true,
+			'success' => false,
 			/* translators: %s: ability name */
-			'message' => sprintf( __( 'Ability "%s" executed successfully.', 'abilityhub' ), $intent['ability'] ),
-			'data'    => $result,
+			'message' => sprintf( __( 'Ability "%s" is not registered or the Abilities API is unavailable.', 'abilityhub' ), $ability_name ),
+			'data'    => null,
 		];
 	}
 

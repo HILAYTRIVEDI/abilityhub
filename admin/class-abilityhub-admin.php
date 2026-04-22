@@ -555,6 +555,27 @@ class AbilityHub_Admin {
                 'category'    => 'site',
                 'example'     => [],
             ],
+            [
+                'name'        => 'abilityhub/get-posts',
+                'label'       => __( 'Get posts', 'abilityhub' ),
+                'description' => __( 'Retrieves a filterable list of posts or pages with IDs, titles, statuses, and URLs. Use before managing posts to find the correct post ID.', 'abilityhub' ),
+                'category'    => 'site',
+                'example'     => [ 'post_type' => 'post', 'post_status' => 'draft', 'limit' => 10 ],
+            ],
+            [
+                'name'        => 'abilityhub/manage-post',
+                'label'       => __( 'Manage post', 'abilityhub' ),
+                'description' => __( 'Create, update, publish, draft, or trash WordPress posts and pages. Can also set post metadata and custom fields.', 'abilityhub' ),
+                'category'    => 'site',
+                'example'     => [ 'action' => 'create', 'title' => 'New Post Title', 'content' => 'Post body here.', 'post_type' => 'post', 'status' => 'draft' ],
+            ],
+            [
+                'name'        => 'abilityhub/update-site-setting',
+                'label'       => __( 'Update site setting', 'abilityhub' ),
+                'description' => __( 'Updates a WordPress site setting such as site title, tagline, timezone, reading settings, or permalink structure. Requires admin privileges.', 'abilityhub' ),
+                'category'    => 'site',
+                'example'     => [ 'setting' => 'blogname', 'value' => 'My Awesome Site' ],
+            ],
         ];
     }
 }
