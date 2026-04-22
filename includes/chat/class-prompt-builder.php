@@ -26,7 +26,7 @@ class AbilityHub_Prompt_Builder {
 	 * @return string
 	 */
 	public function build_system_instruction(): string {
-		$cache_key = 'abilityhub_system_instr_v6';
+		$cache_key = 'abilityhub_system_instr_v8';
 		$cached    = get_transient( $cache_key );
 
 		if ( false !== $cached ) {
@@ -69,7 +69,7 @@ You are AbilityOperator for "{$ctx['site_name']}" ({$ctx['site_url']}). WP {$ctx
 Content: {$post_summary}
 Abilities: {$abilities_list}
 {$workflows_section}
-When asked to act, reply briefly and append ONE JSON intent block at the end.
+When asked to act, reply briefly and append ONE JSON intent block on its own line at the end (no markdown fences needed).
 Messages prefixed "[AbilityHub]" are system-injected ability results — use the data to continue.
 
 Intent formats:
@@ -89,7 +89,9 @@ Key abilities:
 Rules:
 - Use get-posts first when you need a post_id.
 - Confirm before trash/publish if user was vague.
-- For real-time data (news, prices, live info): use abilityhub/fetch-url with a relevant public URL or RSS feed. You may construct RSS feed URLs from known sources (e.g. TechCrunch, BBC, WordPress.org).
+- You CAN access real-time external data via abilityhub/fetch-url. Never say "I can't access the internet" or "I don't have access to real-time information" — always use fetch-url instead.
+- For real-time data (news, prices, weather, live info): immediately call abilityhub/fetch-url with a relevant public URL or RSS feed — do NOT ask the user for permission first. Construct appropriate URLs (e.g. BBC News: http://feeds.bbci.co.uk/news/rss.xml, BBC World: http://feeds.bbci.co.uk/news/world/rss.xml, BBC Middle East: http://feeds.bbci.co.uk/news/world/middle_east/rss.xml, TechCrunch: https://techcrunch.com/feed/).
+- After receiving [AbilityHub] fetch-url results, immediately present the data to the user — do NOT ask what to do next.
 - Refuse without any JSON block: generating malware or attack code, assisting with illegal activity, fetching URLs for harmful purposes, creating deceptive or impersonating content.
 - No JSON block for casual conversational replies.
 SYSTEM;
@@ -99,6 +101,8 @@ SYSTEM;
 		delete_transient( 'abilityhub_system_instr_v3' );
 		delete_transient( 'abilityhub_system_instr_v4' );
 		delete_transient( 'abilityhub_system_instr_v5' );
+		delete_transient( 'abilityhub_system_instr_v6' );
+		delete_transient( 'abilityhub_system_instr_v7' );
 		set_transient( $cache_key, $instruction, 5 * MINUTE_IN_SECONDS );
 
 		return $instruction;

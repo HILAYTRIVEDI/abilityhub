@@ -99,6 +99,30 @@ class AbilityHub_Chat_Handler {
 					$result_json
 				);
 				$this->conversation_store->append( $user_id, 'user', $feedback );
+
+				// Call the AI again so it can present the results to the user
+				// rather than waiting for the next user message.
+				$follow_up_history = $this->conversation_store->get_history_for_ai( $user_id, 8 );
+
+				$follow_up_builder = AbilityHub_AI_Client::get_builder( $feedback );
+				if ( ! is_wp_error( $follow_up_builder ) ) {
+					$follow_up_builder = $follow_up_builder->using_system_instruction( $system_instruction );
+
+					if ( ! empty( $follow_up_history ) && method_exists( $follow_up_builder, 'with_history' ) ) {
+						$follow_up_builder = $follow_up_builder->with_history( $follow_up_history );
+					}
+
+					$follow_up_response = $follow_up_builder->generate_text();
+
+					if ( ! is_wp_error( $follow_up_response ) ) {
+						$this->conversation_store->append( $user_id, 'assistant', $follow_up_response );
+
+						return [
+							'reply'         => $this->intent_parser->strip_intent( $follow_up_response ),
+							'intent_result' => $intent_result,
+						];
+					}
+				}
 			}
 		}
 

@@ -26,11 +26,23 @@ class AbilityHub_Intent_Parser {
 	 * @return array<string, mixed>|null Validated intent or null when none found.
 	 */
 	public function parse( string $ai_response ): ?array {
-		if ( ! preg_match( '/```json\s*(\{[^`]+\})\s*```/s', $ai_response, $matches ) ) {
+		$json_str = null;
+
+		// 1. Prefer fenced ```json ... ``` block (explicit format).
+		if ( preg_match( '/```json\s*(\{[^`]+\})\s*```/s', $ai_response, $matches ) ) {
+			$json_str = trim( $matches[1] );
+		}
+
+		// 2. Fall back to bare JSON object at the end of the response (AI omitted fences).
+		if ( null === $json_str && preg_match( '/(\{[^{}]*"intent"[^{}]*\})/s', $ai_response, $matches ) ) {
+			$json_str = trim( $matches[1] );
+		}
+
+		if ( null === $json_str ) {
 			return null;
 		}
 
-		$decoded = json_decode( trim( $matches[1] ), true );
+		$decoded = json_decode( $json_str, true );
 
 		if ( json_last_error() !== JSON_ERROR_NONE || ! is_array( $decoded ) ) {
 			return null;
@@ -50,7 +62,11 @@ class AbilityHub_Intent_Parser {
 	 * @return string Human-readable portion only.
 	 */
 	public function strip_intent( string $ai_response ): string {
-		return trim( preg_replace( '/```json\s*\{[^`]+\}\s*```/s', '', $ai_response ) );
+		// Remove fenced ```json ... ``` blocks.
+		$stripped = preg_replace( '/```json\s*\{[^`]+\}\s*```/s', '', $ai_response );
+		// Remove bare inline JSON intent objects (AI omitted fences).
+		$stripped = preg_replace( '/\{[^{}]*"intent"[^{}]*\}/s', '', $stripped );
+		return trim( $stripped );
 	}
 
 	/**
